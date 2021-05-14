@@ -23,23 +23,10 @@ router.route('/').post(async (req, res) => {
  res.json(User.toResponse(user));
 });
 
-// router.route('/:id').put(async (req, res) => { // TODO
-//   const user = await usersService.update(
-//     req.params.id,
-//     User.toResponse({
-//       login: req.body.login,
-//       name: req.body.name,
-//       password: req.body.password,
-//     })
-//   );
-//   res.status(200);
-//   res.json(User.toResponse(user));
-// })
-
-// router.route('/:id').delete(async (req, res) => {
-//   await usersService.deleteUser(req.params.id);
-//   res.sendStatus(200);
-// });
+router.route('/:id').delete(async (req, res) => {
+ await usersService.remove(req.params.id);
+  res.status(204).json(null);
+});
 
 router.route('/:id').put(async (req, res) => {
   try {
@@ -52,8 +39,7 @@ router.route('/:id').put(async (req, res) => {
     };
     await usersService.update(idUser, newUser);
     return res.status(200).send(User.toResponse(newUser));
-  } catch (err) {
-  
+  } catch (err) {  
     return res.status(404).end('such user not found');
   }
 

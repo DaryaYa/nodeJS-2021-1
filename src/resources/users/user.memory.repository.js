@@ -17,17 +17,13 @@ const create = async user => DB.createUser(user);
   // return get(user.id);
 
 const update = async (id, user) => {
-  const entity = await DB.updateUser(id, user);
+  const entity = await DB.update(id, user);
   if (!entity) {
     throw new Error(`The user with id: ${id} was not found`);
   }
   return entity;
 }
 
-const del = async id => {
-  if (!(DB.deleteUser(id))) {
-    throw new Error(`The user with id: ${id} was not found`);
-  }
-};
+const remove = async (id) => DB.remove(id);
 
-module.exports = { getAll, get, create, update, del };
+module.exports = { getAll, get, create, update, remove };

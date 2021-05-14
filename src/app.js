@@ -12,7 +12,7 @@ console.log("Hello!");
 app.use(express.json());
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
+app.use('/users', userRouter);
 app.use('/', (req, res, next) => {
   if (req.originalUrl === '/') {
     res.send('Service is running!');
@@ -21,7 +21,7 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use('/users', userRouter);
+
 
 // app.use((err, req, res, next) => {
 //   console.error(err.stack);

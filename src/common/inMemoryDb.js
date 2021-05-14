@@ -1,8 +1,12 @@
-const User = require('../resources/users/user.model');
+  const uuid = require('uuid').v4;
+  const User = require('../resources/users/user.model');
 
-let DB = [];
-
-DB.push(new User(), new User(), new User());
+const DB = [
+  { id: uuid(), name: 'string1', login: 'string1', password: 'string1' },
+  { id: uuid(), name: 'string2', login: 'string2', password: 'string2' },
+  { id: uuid(), name: 'string3', login: 'string3', password: 'string3' },
+  new User(),
+];
 
 const getAllUsers = async () =>[...DB]; // TODO the deep copy
 
@@ -10,32 +14,21 @@ const getUser = async (id) => DB.find((el) => el.id === id);
 
 const createUser = async (user) => {
   DB.push(user);
-  return getUser(user.id);
-  // return user;
+   return user;
 };
 
- // const deleteUser = async id => DB.filter((el)=> el.id !== id);
-
-const updateUser = async (id, user) => {
-  const oldUser = getUser(id);
-  if (oldUser) {
-    const ind = DB.indexOf(oldUser)
-    DB[ind] = { ...user };
-  }
-  return getUser(id);
+const update = async (id, user) => {
+  const list = DB;
+  const index = list.findIndex((v) => v.id === id);
+ list[index] = user;
+  return user;
 } 
 
-const deleteUser = async (id) => {
-  const user = getUser(id);
-  if (user) {
-    const ind = DB.indexOf(user);
-    DB = [...DB.slice(0, ind),
-      ...(DB.length > ind + 1 ? DB.slice(ind +1) : [])
-    
-    ]
-  }
-  return user;
+const remove = async (id) => { 
+  const list = DB;
+  const index = list.findIndex((v) => v.id === id);
+
+ await list.splice(index, 1);
 }
 
-
-module.exports = { getAllUsers, getUser, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUser, createUser, update, remove };

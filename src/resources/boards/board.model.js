@@ -1,5 +1,5 @@
-const uuid = require('uuid');
-// const { columnSchema } = require('./columns.model');
+const uuid = require('uuid').v4;
+const Column = require('./columns.model');
 
 class Board {
   constructor({
@@ -9,7 +9,7 @@ class Board {
   } = {}) {
     this.id = id;
     this.title = title;
-    this.columns = columns;
+    this.columns = columns.map((col) => new Column(col));
   }
 
   static toResponse(board) {
@@ -17,5 +17,6 @@ class Board {
     return { id, title, columns };
   }
 }
+// this.columns = 
 
 module.exports = Board;

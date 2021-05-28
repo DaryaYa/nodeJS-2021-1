@@ -1,14 +1,44 @@
-const DB1 = require('../../common/inMemoryDb');
+// const uuid = require('uuid');
+const { db } = require('../db');
+ const Board = require('./board.model');
 
-const getAllBoards = async () => DB1.getAllBoards();
+const getAllBoards = async () => db.boards;
 
-const getBoard = async id => DB1.getBoard(id);
+const getBoard = async (id) => db.boards.find((item) => item.id === id);
 
-const createBoard = async board => DB1.createBoard(board);
+const createBoard = async ({ title, columns }) => {
+  
+  const columnsArr = columns.map((item) => ({
+    ...item,   
+  }));
+  
+  const boardData = new Board({
+    title,
+    columns: columnsArr,
+  });
 
-const updateBoard = async (id, board) => DB1.updateBoard(id, board);
+  db.boards.push(boardData);
+  return boardData;
+};
 
-const deleteBoard = async (id) => DB1.deleteBoard(id);
+const updateBoard = async (id, board) => {
+  const newBoard = { ...board, id };
+  const boardIndex = db.boards.findIndex((item) => item.id === id);
+  if (boardIndex !== -1) {
+    db.boards[boardIndex] = newBoard;
+    return newBoard;
+  }
+  return null;
+};
+
+const deleteBoard = async (id) => {
+  const boardIndex = db.boards.findIndex((item) => item.id === id);
+  if (boardIndex !== -1) {
+    db.boards.splice(boardIndex, 1);
+    return boardIndex;
+  }
+  return null;
+};
 
 module.exports = {
   getAllBoards,
@@ -17,3 +47,21 @@ module.exports = {
   updateBoard,
   deleteBoard,
 };
+
+// const getAllBoards = async () => db.getAllBoards();
+
+// const getBoard = async id => db.getBoard(id);
+
+// const createBoard = async board => db.createBoard(board);
+
+// const updateBoard = async (id, board) => db.updateBoard(id, board);
+
+// const deleteBoard = async (id) => db.deleteBoard(id);
+
+// module.exports = {
+//   getAllBoards,
+//   getBoard,
+//   createBoard,
+//   updateBoard,
+//   deleteBoard,
+// };

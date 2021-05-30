@@ -18,9 +18,6 @@ app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use('/users', userRouter);
 app.use('/boards/:boardId/tasks', taskRouter);
 app.use('/boards', boardRouter);
-// app.use('/boards', taskRouter);
-// boardRouter.use('/:id/tasks', taskRouter);
-
 
 app.use('/', (req, res, next) => {
   if (req.originalUrl === '/') {
